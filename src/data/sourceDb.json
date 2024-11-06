@@ -1,0 +1,60 @@
+{
+  "countries": [
+    {
+      "countryId": 1,
+      "countryName": "Belarus",
+      "dataPageLink": "https://mon.declarant.by/zone",
+      "zones": [
+        { "zoneName": "Бенякони", "zoneLink": "https://mon.declarant.by/zone/benyakoni" },
+        { "zoneName": "Берестовица", "zoneLink": "https://mon.declarant.by/zone/berestovitsa" },
+        { "zoneName": "Брест", "zoneLink": "https://mon.declarant.by/zone/brest-bts" },
+        { "zoneName": "Григоровщина", "zoneLink": "https://mon.declarant.by/zone/grigorovschina" },
+        { "zoneName": "Каменный Лог", "zoneLink": "https://mon.declarant.by/zone/kamennii-log" },
+        { "zoneName": "Козловичи", "zoneLink": "https://mon.declarant.by/zone/kozlovichi" },
+        { "zoneName": "Котловка", "zoneLink": "https://mon.declarant.by/zone/kotlovka" },
+        { "zoneName": "Урбаны", "zoneLink": "https://mon.declarant.by/zone/urbani" }
+      ],
+      "helpers": [
+        {
+          "vehicleTypeMap": {
+            "lightCar": "Легковой авто",
+            "hugeCar": "Грузовой авто",
+            "autoBus": "Автобус",
+            "motocicle": "Мотоцикл"
+          }
+        },
+        {}
+      ]
+    },
+    {
+      "countryId": 2,
+      "countryName": "Russia",
+      "dataPageLink": "",
+      "searchHelpers": []
+    },
+    {
+      "countryId": 3,
+      "countryName": "Ukraine",
+      "dataPageLink": "",
+      "searchHelpers": []
+    },
+    {
+      "countryId": 4,
+      "countryName": "Poland",
+      "dataPageLink": "",
+      "searchHelpers": []
+    },
+    {
+      "countryId": 5,
+      "countryName": "Lithuania",
+      "dataPageLink": "",
+      "searchHelpers": []
+    },
+    {
+      "countryId": 6,
+      "countryName": "Latvia",
+      "dataPageLink": "",
+      "searchHelpers": []
+    }
+  ]
+}
