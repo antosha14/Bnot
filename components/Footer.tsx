@@ -1,71 +1,56 @@
-import { Text, View, Image, ImageSourcePropType } from 'react-native';
-import { Tabs, Redirect } from 'expo-router';
+import { View } from 'react-native';
+import { Tabs } from 'expo-router';
 import React from 'react';
-import icons from '../constants/icons';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 
-const TabIcon = ({
-  icon,
-  color,
-  name,
-  focused,
-}: {
-  icon: ImageSourcePropType;
-  color: string;
-  name: string;
-  focused: boolean;
-}) => {
+const TabIcon = ({ icon, focused }: { icon: string; focused: boolean }) => {
   return (
     <View className="flex items-center justify-center gap-2">
-      <Image source={icon} resizeMode="contain" tintColor={color} className="w-6 h-6" />
-      <Text className={`${focused ? 'font-psemibold' : 'font-pregular'} text-3xs`} style={{ color: color }}>
-        {name}
-      </Text>
+      <FontAwesome name={icon} size={24} color={focused ? '#4C4DDC' : 'black'} />
     </View>
   );
 };
 
 const Footer = () => {
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: '#FFA001',
-        tabBarInactiveTintColor: '#CDCDE0',
-        tabBarShowLabel: false,
-        tabBarStyle: {
-          backgroundColor: '#161622',
-          borderTopColor: '#232533',
-          height: 84,
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="home"
-        options={{
-          title: 'Home',
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => <TabIcon icon={icons.home} color={color} name="Home" focused={focused} />,
+    <>
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: '#4C4DDC',
+          tabBarStyle: {
+            backgroundColor: '#FFF',
+            borderTopColor: '#232533',
+            height: 60,
+          },
         }}
-      />
+      >
+        <Tabs.Screen
+          name="home"
+          options={{
+            title: 'New Trip',
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => <TabIcon icon="rocket" focused={focused} />,
+          }}
+        />
 
-      <Tabs.Screen
-        name="currentTrip"
-        options={{
-          title: 'Current Trip',
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => <TabIcon icon={icons.car} color={color} name="Trip" focused={focused} />,
-        }}
-      />
-      <Tabs.Screen
-        name="history"
-        options={{
-          title: 'History',
-          headerShown: false,
-          tabBarIcon: ({ color, focused }) => (
-            <TabIcon icon={icons.bookmark} color={color} name="History" focused={focused} />
-          ),
-        }}
-      />
-    </Tabs>
+        <Tabs.Screen
+          name="currentTrip"
+          options={{
+            title: 'Current Trip',
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => <TabIcon icon="car" focused={focused} />,
+          }}
+        />
+        <Tabs.Screen
+          name="history"
+          options={{
+            title: 'History',
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => <TabIcon icon="history" focused={focused} />,
+          }}
+        />
+      </Tabs>
+    </>
   );
 };
 

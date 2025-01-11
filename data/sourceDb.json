@@ -17,8 +17,8 @@
       "helpers": [
         {
           "vehicleTypeMap": {
-            "lightCar": "Легковой авто",
-            "hugeCar": "Грузовой авто",
+            "lightCar": "Легковой автомобиль",
+            "hugeCar": "Грузовой автомобиль",
             "autoBus": "Автобус",
             "motocicle": "Мотоцикл"
           }
