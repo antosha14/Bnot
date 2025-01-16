@@ -1,33 +1,29 @@
 import { Text, StyleSheet, ScrollView } from 'react-native';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { TripCard, Trip } from '@/components/TripCard';
-
-let newTrip = {
-  from: 'Belarus',
-  to: 'Lithvania',
-  location: 'Григоровщина',
-  startTime: new Date(Date.now()),
-  initialQueuePosition: 10,
-  endTime: new Date(Date.now()),
-  finishStatus: 1,
-  vehicleType: 'Легковой автомобиль',
-};
+import { TripCard } from '@/components/TripCard';
+import { useAsyncStorage } from '@/hooks/useAsyncStorage';
+import { dummyHistoryEntree } from '@/constants/types';
 
 const History = () => {
+  const [history, setHistory] = useAsyncStorage('history', []);
+
   return (
     <SafeAreaView style={styles.pageContainer}>
       <ScrollView>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
-        <TripCard trip={newTrip}></TripCard>
+        {history.length === 0 ? (
+          <>
+            <TripCard trip={dummyHistoryEntree}></TripCard>
+            <Text style={styles.description}>
+              This is an example of how history entree would look like. You haven't completed any trips at the moment.
+              Complete a new trip to add real history item
+            </Text>
+          </>
+        ) : (
+          history.reverse().map(trip => {
+            return <TripCard trip={trip} key={trip.endTime} setHistory={setHistory}></TripCard>;
+          })
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -37,6 +33,16 @@ const styles = StyleSheet.create({
   pageContainer: {
     backgroundColor: '#4C4DDC',
     flex: 1,
+    alignItems: 'center',
+  },
+  description: {
+    textAlign: 'center',
+    color: '#FFF',
+    fontSize: 15,
+    fontWeight: 500,
+    marginTop: 15,
+    marginRight: 8,
+    marginLeft: 8,
   },
 });
 

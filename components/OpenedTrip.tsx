@@ -1,16 +1,23 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { StyleSheet, Text, View, Pressable } from 'react-native';
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { close } from '@/store/currentTripSlice';
+import { QueueEntreeOpen, QueueEntreeClose } from '@/constants/types';
+import { RootState } from '@/store/store';
+import { parseDate } from '@/helpers/helpers';
 import Entypo from '@expo/vector-icons/Entypo';
-import { QueueEntreeClose } from '@/constants/types';
-import { parseDate, parseDuration } from '@/helpers/helpers';
+import Timer from './Timer';
 
-export const TripCard = ({ trip, setHistory }: { trip: QueueEntreeClose; setHistory: Function }) => {
+const OpenedTrip = () => {
+  const dispatch = useDispatch();
+  const trip = useSelector((state: RootState) => state.currentTrip['currentTrip']);
   return (
     <View style={styles.cardContainer}>
       <View>
         <Text style={styles.pathText}>
           {`${trip.from} `}
           <Entypo name="arrow-long-right" size={14} color="black" />
-          <Text>{` ${trip.to} ${parseDate(trip.endTime)}`}</Text>
+          <Text>{` ${trip.to} ${parseDate(trip.appRegistrationTime)}`}</Text>
         </Text>
       </View>
 
@@ -25,39 +32,64 @@ export const TripCard = ({ trip, setHistory }: { trip: QueueEntreeClose; setHist
       </Text>
 
       <Text style={styles.descriptionText}>
-        {`Initial queue position: `}
+        {`Current queue position: `}
         <Text style={styles.normalText}>{trip.initialQueuePosition}</Text>
       </Text>
 
       <Text style={styles.descriptionText}>
-        {`Time since trip started: `}
-        <Text style={styles.normalText}>{parseDuration(trip.appRegistrationTime, trip.endTime)}</Text>
-      </Text>
-
-      <Text style={styles.descriptionText}>
-        {`Trip status: `}
-        <Text style={[styles.normalText, { color: trip.finishStatus === 'Closed by the user' ? 'green' : 'red' }]}>
-          {`${trip.finishStatus}`}
+        {`Current trip duration: `}
+        <Text style={styles.normalText}>
+          <Timer timestamp={trip.appRegistrationTime} />
         </Text>
       </Text>
 
       <Pressable
-        style={({ pressed }) => [styles.deleteButton, { opacity: pressed ? 0.8 : 1 }]}
+        style={({ pressed }) => [
+          styles.startTripButton,
+          {
+            opacity: pressed ? 0.8 : 1,
+          },
+        ]}
         onPress={() => {
-          if (setHistory) {
-            setHistory(prevHistory => {
-              return prevHistory.filter(tripFromHistory => tripFromHistory.endTime !== trip.endTime);
-            });
-          }
+          dispatch(
+            close({
+              ...trip,
+              endTime: Date.now(),
+              finishStatus: 'Closed by the user',
+            })
+          );
         }}
       >
-        <Text style={styles.deleteButtonText}>Delete Trip</Text>
+        <Text style={styles.startButtonText}>Close the trip</Text>
       </Pressable>
     </View>
   );
 };
 
+export default OpenedTrip;
+
 const styles = StyleSheet.create({
+  startTripButton: {
+    display: 'flex',
+    marginTop: 6,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 5,
+    backgroundColor: 'rgb(46, 35, 108)',
+    borderRadius: 8,
+    zIndex: 100,
+    paddingTop: 8,
+    paddingBottom: 8,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  startButtonText: {
+    color: '#FFF',
+    fontWeight: 700,
+  },
   cardContainer: {
     backgroundColor: '#FFF',
     borderRadius: 25,
@@ -67,6 +99,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     padding: 12,
     minWidth: '95%',
+    height: 'auto',
   },
   pathText: {
     fontSize: 18,

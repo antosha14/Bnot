@@ -3,35 +3,44 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import StripedBackground from '@/components/StripedBackground';
+import type { RootState } from '../../store/store';
+import { useSelector } from 'react-redux';
+import OpenedTrip from '@/components/OpenedTrip';
+import OnlineStatus from '@/components/OnlineStatus';
 
 const PlaceholderImage = require('@/assets/images/forest.jpg');
 
 const CurrentTrip = () => {
   const router = useRouter();
+  const currentTrip = useSelector((state: RootState) => state.currentTrip);
+
   return (
     <SafeAreaView style={styles.pageContainer}>
-      <View style={styles.backgroundContainer}>
-        <View style={styles.secondaryDiv}></View>
-        <View style={styles.secondaryDiv}></View>
-        <View style={styles.secondaryDiv}></View>
-        <View style={styles.secondaryDiv}></View>
-      </View>
-
-      <View>
-        <Image source={PlaceholderImage} style={styles.forestImage} />
-      </View>
-
-      <View style={styles.messageContainer}>
-        <Text style={styles.messageText}>
-          You currently don't have any trip opened. Do you want to open a new trip?
-        </Text>
-        <Pressable
-          style={({ pressed }) => [styles.redirectButton, { opacity: pressed ? 0.8 : 1 }]}
-          onPress={() => router.push('/(tabs)/home')}
-        >
-          <Text style={styles.redirectButtonText}>Start a new Trip</Text>
-        </Pressable>
-      </View>
+      <StripedBackground />
+      {!currentTrip.opened ? (
+        <>
+          <View>
+            <Image source={PlaceholderImage} style={styles.forestImage} />
+          </View>
+          <View style={styles.messageContainer}>
+            <Text style={styles.messageText}>
+              You currently don't have any trips opened. Do you want to open a new trip?
+            </Text>
+            <Pressable
+              style={({ pressed }) => [styles.redirectButton, { opacity: pressed ? 0.8 : 1 }]}
+              onPress={() => router.push('/(tabs)/home')}
+            >
+              <Text style={styles.redirectButtonText}>Start a new Trip</Text>
+            </Pressable>
+          </View>
+        </>
+      ) : (
+        <>
+          <OpenedTrip></OpenedTrip>
+          <OnlineStatus />
+        </>
+      )}
     </SafeAreaView>
   );
 };
@@ -42,19 +51,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  secondaryDiv: {
-    backgroundColor: '#FFF',
-    opacity: 0.1,
-    zIndex: 2,
-    width: 1000,
-    height: 100,
-    margin: 100,
-    transform: [{ rotate: '45deg' }],
-  },
-  backgroundContainer: {
-    flex: 1,
-    position: 'absolute',
   },
   forestImage: { width: 320, height: 400, borderRadius: 100, zIndex: 10 },
   messageContainer: {

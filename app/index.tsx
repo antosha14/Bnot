@@ -1,14 +1,40 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PlaceholderImage = require('@/assets/images/village.jpg');
 
-//Проставить в сторе флаг и редайректить на новую
+const retriveTutorialFlag = async () => {
+  try {
+    return await AsyncStorage.getItem('shownTutorial');
+  } catch (e) {
+    alert(e);
+  }
+};
+
+const setTutorialFlag = async () => {
+  try {
+    await AsyncStorage.setItem('my-key', 'shown');
+  } catch (e) {
+    alert(e);
+  }
+};
+
 const HomePage = () => {
   const router = useRouter();
+
+  useEffect(() => {
+    let tutorialShown;
+    retriveTutorialFlag().then(value => {
+      tutorialShown = value;
+    });
+    if (tutorialShown) {
+      router.replace('/(tabs)/currentTrip');
+    }
+  }, [router]);
 
   return (
     <SafeAreaView style={styles.mainArea}>
@@ -26,7 +52,10 @@ const HomePage = () => {
           </Text>
           <Pressable
             style={({ pressed }) => [styles.directionButton, { opacity: pressed ? 0.8 : 1 }]}
-            onPress={() => router.push('/(tabs)/home')}
+            onPress={() => {
+              setTutorialFlag();
+              router.replace('/(tabs)/currentTrip');
+            }}
           >
             <Text style={styles.linkText}>Get Started</Text>
           </Pressable>

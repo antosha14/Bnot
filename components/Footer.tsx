@@ -16,6 +16,7 @@ const Footer = () => {
     <>
       <Tabs
         screenOptions={{
+          tabBarHideOnKeyboard: true,
           tabBarActiveTintColor: '#4C4DDC',
           tabBarStyle: {
             backgroundColor: '#FFF',

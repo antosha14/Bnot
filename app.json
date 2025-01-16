@@ -36,6 +36,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "24fc7ca7-6e52-4a85-8936-787a9e6d723f"
+      }
+    },
+    "owner": "antonkozel"
   }
 }
