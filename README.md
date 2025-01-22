@@ -1,50 +1,13 @@
-# Welcome to your Expo app 👋
+# Here is Bnot, your personal border notification app.
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+### This application utilizes electronic live queue, implemented in Belarus and notifies you, when it's your turn to go throw customs control.
 
-## Get started
+### You find your registration number in a queue, open a trip and app will notify you with song and alert while in foreground, and with push notification while in background.
 
-1. Install dependencies
+# Here are some screenshots of the app.
 
-   ```bash
-   npm install
-   ```
+# Additional information
 
-2. Start the app
+### App is created using React Native. Unfortunately to publish an app to playmarket and throw push notifications from the server on iphones Google and Apple developer accounts are required. Because i don't have this accounts i didn't publish the app to playmarket and apple store, and background push notifications don't work in iphone build. If you have corresponding accounts you can use them to correct this flows, feel free to use my sourcecode.
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+### To be honest I thought that all countries implemented electronic queue at the border, which would make the application international, but that is not the case, and application focuses solely on Belarus. But if in the future electronic queues become more common, you can adapt my code for your country. I wish you good luck!

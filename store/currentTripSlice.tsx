@@ -3,7 +3,7 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { QueueEntreeOpen, QueueEntreeClose } from '../constants/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const initialState = { opened: false, currentTrip: {} };
+const initialState = { opened: false, currentTrip: {}, historyUpdated: false };
 
 const addHistoryItem = async (car: QueueEntreeClose) => {
   try {
@@ -31,6 +31,7 @@ export const currentTripSlice = createSlice({
       state.opened = false;
       addHistoryItem(action.payload);
       state.currentTrip = {};
+      state.historyUpdated = !state.historyUpdated;
     },
     changePosition: (state, action: PayloadAction<number>) => {
       state.currentTrip.currentQueuePosition = action.payload;

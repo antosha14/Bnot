@@ -1,9 +1,8 @@
 import { configureStore } from '@reduxjs/toolkit';
 import currentTripReducer from './currentTripSlice';
-import settingsReducer from './settingsSlice';
 
 export const store = configureStore({
-  reducer: { currentTrip: currentTripReducer, settings: settingsReducer },
+  reducer: { currentTrip: currentTripReducer },
 });
 
 // Infer the `RootState` and `AppDispatch` types from the store itself

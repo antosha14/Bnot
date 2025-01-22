@@ -3,6 +3,7 @@ import * as TaskManager from 'expo-task-manager';
 import { queueMapping, queueTypeMapping } from '@/constants/types';
 import { store } from '@/store/store';
 import * as Notifications from 'expo-notifications';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const BACKGROUND_FETCH_TASK = 'background-fetch-task';
 const BACKEND_NOTIFICATION_SERVER = 'https://btonnotifications.netlify.app/.netlify/functions/inform';
@@ -18,8 +19,7 @@ Notifications.setNotificationHandler({
 TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
   try {
     const currentTrip = store.getState().currentTrip.currentTrip;
-    const settings = store.getState().settings;
-
+    const notifyPosition = await AsyncStorage.getItem('notifyPosition');
     const params = new URLSearchParams({
       token: currentTrip.token,
       link: currentTrip.link,
@@ -30,7 +30,7 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
             return type === currentTrip.vehicleType;
           })
         ],
-      notifyPosition: `${settings.notifyPosition}`,
+      notifyPosition: notifyPosition || '5',
     });
 
     await fetch(`${BACKEND_NOTIFICATION_SERVER}?${params}`);
