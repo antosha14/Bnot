@@ -50,6 +50,14 @@ const Footer = () => {
             tabBarIcon: ({ color, focused }) => <TabIcon icon="history" focused={focused} />,
           }}
         />
+        <Tabs.Screen
+          name="settings"
+          options={{
+            title: 'Settings',
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => <TabIcon icon="gear" focused={focused} />,
+          }}
+        />
       </Tabs>
     </>
   );

@@ -49,11 +49,15 @@ const QueueEntry = ({ car }: { car: QueueEntreeForEntryComponent }) => {
                       launch({
                         from: car.from,
                         to: checkpointsToCountries[car.checkpoint],
+                        regnum: car.regnum,
                         location: car.checkpoint,
                         startTime: car.registration_date,
                         initialQueuePosition: car.initialQueuePosition,
                         vehicleType: queueTypeMapping[car.type_queue],
                         appRegistrationTime: Date.now(),
+                        currentQueuePosition: car.initialQueuePosition,
+                        link: car.link,
+                        token: car.token,
                       })
                     );
                     router.push('/(tabs)/currentTrip');
@@ -67,10 +71,14 @@ const QueueEntry = ({ car }: { car: QueueEntreeForEntryComponent }) => {
                 from: car.from,
                 to: checkpointsToCountries[car.checkpoint],
                 location: car.checkpoint,
+                regnum: car.regnum,
                 startTime: car.registration_date,
                 initialQueuePosition: car.initialQueuePosition,
                 vehicleType: queueTypeMapping[car.type_queue],
                 appRegistrationTime: Date.now(),
+                currentQueuePosition: car.initialQueuePosition,
+                link: car.link,
+                token: car.token,
               })
             );
             router.push('/(tabs)/currentTrip');

@@ -1,16 +1,17 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { close } from '@/store/currentTripSlice';
-import { QueueEntreeOpen, QueueEntreeClose } from '@/constants/types';
 import { RootState } from '@/store/store';
 import { parseDate } from '@/helpers/helpers';
 import Entypo from '@expo/vector-icons/Entypo';
 import Timer from './Timer';
+import QueuePosition from './QueuePosition';
 
 const OpenedTrip = () => {
   const dispatch = useDispatch();
   const trip = useSelector((state: RootState) => state.currentTrip['currentTrip']);
+
   return (
     <View style={styles.cardContainer}>
       <View>
@@ -27,13 +28,18 @@ const OpenedTrip = () => {
       </Text>
 
       <Text style={styles.descriptionText}>
+        {`Car Registration Number: `}
+        <Text style={styles.normalText}>{trip.regnum}</Text>
+      </Text>
+
+      <Text style={styles.descriptionText}>
         {`Vehicle type: `}
         <Text style={styles.normalText}>{trip.vehicleType}</Text>
       </Text>
 
       <Text style={styles.descriptionText}>
         {`Current queue position: `}
-        <Text style={styles.normalText}>{trip.initialQueuePosition}</Text>
+        <QueuePosition />
       </Text>
 
       <Text style={styles.descriptionText}>

@@ -9,6 +9,8 @@ export function useAsyncStorage(key, initialValue) {
       const value = await AsyncStorage.getItem(key);
       if (value !== null) {
         setStoredValue(JSON.parse(value));
+      } else {
+        setStoredValue(JSON.parse(initialValue));
       }
     };
     loadStoredValue();
@@ -19,8 +21,8 @@ export function useAsyncStorage(key, initialValue) {
       const valueToStore = value instanceof Function ? value(storedValue) : value;
       setStoredValue(valueToStore);
       AsyncStorage.setItem(key, JSON.stringify(valueToStore));
-    } catch (error) {
-      alert(error);
+    } catch (e) {
+      alert(e);
     }
   };
 

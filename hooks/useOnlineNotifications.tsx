@@ -7,7 +7,7 @@ import * as Notifications from 'expo-notifications';
 
 export function useOnlineNotification() {
   const { type, isConnected } = useNetInfo();
-  const tripOpened = useSelector((state: RootState) => state.currentTrip.opened);
+  const tripOpened = useSelector((state: RootState) => state.currentTrip?.opened);
   useEffect(() => {
     if (!isConnected) {
       const checkNetwork = async () => {
@@ -15,13 +15,15 @@ export function useOnlineNotification() {
           await Notifications.scheduleNotificationAsync({
             content: {
               title: 'Network Connection Lost',
-              body: 'You have lost your internet connection.',
-              sound: false,
+              body: "You have lost your internet connection. Application will not be able to notify you correctly if connection whouldn't restore. Be conscious of queue position and check it yourself",
             },
             trigger: null,
           });
 
-          Vibration.vibrate(1000);
+          Vibration.vibrate([1000, 1000, 1000]);
+          alert(
+            "You have lost your internet connection. Application will not be able to notify you correctly if connection whouldn't restore. Be conscious of queue position and check it yourself"
+          );
         }
       };
 

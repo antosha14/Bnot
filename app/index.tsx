@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
@@ -17,7 +17,7 @@ const retriveTutorialFlag = async () => {
 
 const setTutorialFlag = async () => {
   try {
-    await AsyncStorage.setItem('my-key', 'shown');
+    await AsyncStorage.setItem('shownTutorial', 'shown');
   } catch (e) {
     alert(e);
   }
@@ -26,14 +26,14 @@ const setTutorialFlag = async () => {
 const HomePage = () => {
   const router = useRouter();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     let tutorialShown;
     retriveTutorialFlag().then(value => {
       tutorialShown = value;
+      if (tutorialShown) {
+        router.replace('/(tabs)/currentTrip');
+      }
     });
-    if (tutorialShown) {
-      router.replace('/(tabs)/currentTrip');
-    }
   }, [router]);
 
   return (

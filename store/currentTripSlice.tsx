@@ -3,12 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { QueueEntreeOpen, QueueEntreeClose } from '../constants/types';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const initialState = { opened: false, сurrentTrip: {} };
+const initialState = { opened: false, currentTrip: {} };
 
 const addHistoryItem = async (car: QueueEntreeClose) => {
   try {
     let currentHistory = await AsyncStorage.getItem('history');
-    if (!currentHistory) {
+    if (!currentHistory || currentHistory.length === 0) {
       await AsyncStorage.setItem('history', JSON.stringify([car]));
     } else {
       let currentHistoryArray = JSON.parse(currentHistory);
@@ -32,10 +32,11 @@ export const currentTripSlice = createSlice({
       addHistoryItem(action.payload);
       state.currentTrip = {};
     },
+    changePosition: (state, action: PayloadAction<number>) => {
+      state.currentTrip.currentQueuePosition = action.payload;
+    },
   },
 });
 
-// Action creators are generated for each case reducer function
-export const { launch, close } = currentTripSlice.actions;
-
+export const { launch, close, changePosition } = currentTripSlice.actions;
 export default currentTripSlice.reducer;

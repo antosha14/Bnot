@@ -13,6 +13,7 @@ export interface QueueEntreeForEntryComponent extends QueueEntreeFromApi {
   from: string;
   checkpoint: string;
   initialQueuePosition: number;
+  link: string;
 }
 
 export interface QueueEntreeOpen {
@@ -23,6 +24,10 @@ export interface QueueEntreeOpen {
   startTime: string;
   vehicleType: string;
   appRegistrationTime: number;
+  currentQueuePosition: number;
+  regnum: string;
+  link: string;
+  token: string;
 }
 
 export interface QueueEntreeClose extends QueueEntreeOpen {

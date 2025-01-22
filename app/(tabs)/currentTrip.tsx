@@ -4,7 +4,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import StripedBackground from '@/components/StripedBackground';
-import type { RootState } from '../../store/store';
+import type { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import OpenedTrip from '@/components/OpenedTrip';
 import OnlineStatus from '@/components/OnlineStatus';
@@ -29,7 +29,9 @@ const CurrentTrip = () => {
             </Text>
             <Pressable
               style={({ pressed }) => [styles.redirectButton, { opacity: pressed ? 0.8 : 1 }]}
-              onPress={() => router.push('/(tabs)/home')}
+              onPress={() => {
+                router.push('/(tabs)/home');
+              }}
             >
               <Text style={styles.redirectButtonText}>Start a new Trip</Text>
             </Pressable>

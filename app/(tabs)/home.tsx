@@ -7,6 +7,7 @@ import IconsGalery from '@/components/IconsGalery';
 import QueueEntry from '@/components/QueueEntry';
 import RegistrationNumberSearch from '@/components/RegistrationNumberSearch';
 import { queueMapping } from '@/constants/types';
+import { useNotification } from '@/contexts/NotificationContext';
 
 function Home() {
   const [start, setStart] = useState('Belarus');
@@ -17,6 +18,7 @@ function Home() {
   const [queueVisible, setQueueVisible] = useState(false);
   const [registrationNumber, setRegistrationNumber] = useState('');
   const scrollRef = useRef();
+  const { expoPushToken } = useNotification();
 
   let filteredQueue;
 
@@ -34,14 +36,14 @@ function Home() {
       }
       const result = await response.json();
       setQueueData(result);
-    } catch (err) {
-      setQueueData({ message: err.message });
+    } catch (e) {
+      alert(e.message);
     }
   };
 
+  const zoneIndex = db[start].zonesFrom.findIndex(obj => obj.zoneName === checkpoint);
   useEffect(() => {
-    const index = db[start].zonesFrom.findIndex(obj => obj.zoneName === checkpoint);
-    fetchData(db[start].zonesFrom[index].zoneLink);
+    fetchData(db[start].zonesFrom[zoneIndex].zoneLink);
   }, [checkpoint]);
 
   return (
@@ -106,6 +108,8 @@ function Home() {
                         checkpoint: checkpoint,
                         initialQueuePosition: index,
                         type_queue: vehicleType,
+                        link: db[start].zonesFrom[zoneIndex].zoneLink,
+                        token: expoPushToken,
                       }}
                       key={car.regnum}
                     ></QueueEntry>
