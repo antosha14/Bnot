@@ -56,7 +56,6 @@ export interface QueueEntreeOpen {
   currentQueuePosition: number;
   regnum: string;
   link: string;
-  token: string;
 }
 
 export interface QueueEntreeClose extends QueueEntreeOpen {
@@ -91,5 +90,4 @@ export let dummyHistoryEntree = {
   currentQueuePosition: 4,
   regnum: 'asfqwf',
   link: 'https://belarusborder.by/info/monitoring-new?token=test&checkpointId=a9173a85-3fc0-424c-84f0-defa632481e4',
-  token: 'sdnjansdj',
 };

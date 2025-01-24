@@ -3,7 +3,6 @@ import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { store } from '../store/store';
 import { Provider } from 'react-redux';
-import { NotificationProvider } from '@/contexts/NotificationContext';
 import * as Notifications from 'expo-notifications';
 
 Notifications.setNotificationHandler({
@@ -17,14 +16,12 @@ Notifications.setNotificationHandler({
 const RootLayout = () => {
   return (
     <Provider store={store}>
-      <NotificationProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen name="index" options={{ headerShown: false }} />
-          <Stack.Screen name="+not-found" />
-        </Stack>
-        <StatusBar backgroundColor="#4C4DDC" style="light" />
-      </NotificationProvider>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="index" options={{ headerShown: false }} />
+        <Stack.Screen name="+not-found" />
+      </Stack>
+      <StatusBar backgroundColor="#4C4DDC" style="light" />
     </Provider>
   );
 };

@@ -6,19 +6,10 @@ import * as Notifications from 'expo-notifications';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const BACKGROUND_FETCH_TASK = 'background-fetch-task';
-const BACKEND_NOTIFICATION_SERVER = 'https://btonnotifications.netlify.app/.netlify/functions/inform';
 
-const sendErrorNotification = async (error: Error) => {
-  const currentTrip = store.getState().currentTrip.currentTrip;
-  await fetch('https://exp.host/--/api/v2/push/send', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      to: currentTrip.token,
-      sound: 'default',
-      body: `Encountered error: ${error.message}`,
-    }),
-  });
+const notificationContent = {
+  title: 'Tour turn',
+  body: 'It is your turn to pass border control',
 };
 
 Notifications.setNotificationHandler({
@@ -40,24 +31,26 @@ TaskManager.defineTask(BACKGROUND_FETCH_TASK, async () => {
       console.error('Failed to fetch notifyPosition from AsyncStorage:', error);
     }
 
-    const params = new URLSearchParams({
-      token: currentTrip.token,
-      link: currentTrip.link,
-      regnum: currentTrip.regnum,
-      queueName:
+    const response = await fetch(currentTrip.link);
+    const data = await response.json();
+
+    const newPosition =
+      data[
         queueMapping[
           queueTypeMapping.findIndex(type => {
             return type === currentTrip.vehicleType;
           })
-        ],
-      notifyPosition: notifyPosition || '5',
-    });
+        ]
+      ].findIndex(trip => {
+        return trip.regnum === currentTrip.regnum;
+      }) + 1;
 
-    await fetch(`${BACKEND_NOTIFICATION_SERVER}?${params}`);
+    if (newPosition <= notifyPosition) {
+      Notifications.scheduleNotificationAsync({ content: notificationContent, trigger: null });
+    }
 
     return BackgroundFetch.BackgroundFetchResult.NewData;
   } catch (error) {
-    await sendErrorNotification(error);
     return BackgroundFetch.BackgroundFetchResult.Failed;
   }
 });
