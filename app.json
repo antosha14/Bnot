@@ -12,7 +12,8 @@
       "supportsTablet": true,
       "infoPlist": {
         "UIBackgroundModes": ["fetch"]
-      }
+      },
+      "bundleIdentifier": "com.antonkozel.Bnot"
     },
     "android": {
       "adaptiveIcon": {

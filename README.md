@@ -15,3 +15,5 @@
 ### App is created using React Native. Unfortunately to publish an app to playmarket and throw push notifications from the server on iphones Google and Apple developer accounts are required. Because i don't have this accounts i didn't publish the app to playmarket and apple store, and background push notifications don't work in iphone build. If you have corresponding accounts you can use them to correct this flows, feel free to use my sourcecode.
 
 ### To be honest I thought that all countries implemented electronic queue at the border, which would make the application international, but that is not the case, and application focuses solely on Belarus. But if in the future electronic queues become more common, you can adapt my code for your country. I wish you good luck!
+
+# Builded version of the app for android in a file androidBuild.apk
