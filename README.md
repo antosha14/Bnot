@@ -6,6 +6,10 @@
 
 # Here are some screenshots of the app.
 
+<img src="./assets/screenshots/1.jpg" alt="Image 1" style="width: 33%;" />
+<img src="./assets/screenshots/2.jpg" alt="Image 2" style="width: 33%;" />
+<img src="./assets/screenshots/3.jpg" alt="Image 3" style="width: 33%;" />
+
 # Additional information
 
 ### App is created using React Native. Unfortunately to publish an app to playmarket and throw push notifications from the server on iphones Google and Apple developer accounts are required. Because i don't have this accounts i didn't publish the app to playmarket and apple store, and background push notifications don't work in iphone build. If you have corresponding accounts you can use them to correct this flows, feel free to use my sourcecode.
