@@ -1,9 +1,15 @@
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+import React from 'react';
 import Entypo from '@expo/vector-icons/Entypo';
 import { QueueEntreeClose } from '@/constants/types';
 import { parseDate, parseDuration } from '@/helpers/helpers';
 
-export const TripCard = ({ trip, setHistory }: { trip: QueueEntreeClose; setHistory: Function }) => {
+interface TripCardProps {
+  trip: QueueEntreeClose;
+  setHistory: (callback: (prevHistory: QueueEntreeClose[]) => QueueEntreeClose[]) => void;
+}
+
+export const TripCard: React.FC<TripCardProps> = ({ trip, setHistory }) => {
   return (
     <View style={styles.cardContainer}>
       <View>

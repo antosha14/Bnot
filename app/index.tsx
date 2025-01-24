@@ -1,15 +1,15 @@
-import { View, Text, StyleSheet, Pressable } from 'react-native';
-import React, { useLayoutEffect } from 'react';
+import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const PlaceholderImage = require('@/assets/images/village.jpg');
+const TUTORIAL_KEY = 'shownTutorial';
 
-const retriveTutorialFlag = async () => {
+const retrieveTutorialFlag = async () => {
   try {
-    return await AsyncStorage.getItem('shownTutorial');
+    return await AsyncStorage.getItem(TUTORIAL_KEY);
   } catch (e) {
     alert(e);
   }
@@ -17,29 +17,42 @@ const retriveTutorialFlag = async () => {
 
 const setTutorialFlag = async () => {
   try {
-    await AsyncStorage.setItem('shownTutorial', 'shown');
+    await AsyncStorage.setItem(TUTORIAL_KEY, 'shown');
   } catch (e) {
     alert(e);
   }
 };
 
+const getButtonStyle = ({ pressed }) => [styles.directionButton, { opacity: pressed ? 0.8 : 1 }];
+
 const HomePage = () => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(true);
 
-  useLayoutEffect(() => {
-    let tutorialShown;
-    retriveTutorialFlag().then(value => {
-      tutorialShown = value;
+  useEffect(() => {
+    const checkTutorialFlag = async () => {
+      const tutorialShown = await retrieveTutorialFlag();
       if (tutorialShown) {
         router.replace('/(tabs)/currentTrip');
       }
-    });
+      setIsLoading(false);
+    };
+
+    checkTutorialFlag();
   }, [router]);
+
+  if (isLoading) {
+    return (
+      <SafeAreaView style={[styles.mainArea, styles.loadingContainer]}>
+        <ActivityIndicator size="large" color="#FFF" />
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.mainArea}>
       <View style={styles.upperContainer}>
-        <Image source={PlaceholderImage} style={styles.image} />
+        <Image source={require('@/assets/images/village.jpg')} style={styles.image} />
       </View>
 
       <View style={styles.bottomContainer}>
@@ -51,7 +64,7 @@ const HomePage = () => {
             to work correctly, allow the display of notifications
           </Text>
           <Pressable
-            style={({ pressed }) => [styles.directionButton, { opacity: pressed ? 0.8 : 1 }]}
+            style={getButtonStyle}
             onPress={() => {
               setTutorialFlag();
               router.replace('/(tabs)/currentTrip');
@@ -138,6 +151,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 600,
   },
+  loadingContainer: { justifyContent: 'center', alignItems: 'center' },
 });
 
 export default HomePage;

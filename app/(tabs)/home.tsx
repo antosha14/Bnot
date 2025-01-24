@@ -1,5 +1,5 @@
 import { Text, ScrollView, StyleSheet, View, Pressable } from 'react-native';
-import React, { useEffect, useState, useDeferredValue, Suspense, useRef, ActivityIndicator } from 'react';
+import React, { useEffect, useState, Suspense, useRef } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Picker } from '@react-native-picker/picker';
 import db from '@/data/sourceDb';
@@ -14,22 +14,25 @@ function Home() {
   const [checkpoint, setСheckpoint] = useState(db[start].zonesFrom[0].zoneName);
   const [vehicleType, setVehicleType] = useState(0);
   const [queueData, setQueueData] = useState({});
-  const deferredValue = useDeferredValue(queueData);
   const [queueVisible, setQueueVisible] = useState(false);
   const [registrationNumber, setRegistrationNumber] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const scrollRef = useRef();
   const { expoPushToken } = useNotification();
 
   let filteredQueue;
 
-  if (deferredValue && deferredValue.info) {
-    filteredQueue = deferredValue[queueMapping[vehicleType]].filter(car => {
+  if (queueData && queueData.info) {
+    filteredQueue = queueData[queueMapping[vehicleType]].filter(car => {
       return car.regnum.startsWith(registrationNumber);
     });
   }
 
   const fetchData = async url => {
     try {
+      setLoading(true);
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -37,7 +40,10 @@ function Home() {
       const result = await response.json();
       setQueueData(result);
     } catch (e) {
+      setError(e);
       alert(e.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -92,12 +98,23 @@ function Home() {
           </Pressable>
         </View>
         <View style={styles.entryContainer}>
-          {queueVisible && (
+          {queueVisible && loading && (
+            <>
+              {[...Array(5)].map((_, index) => (
+                <View key={index} style={styles.skeletonItem}>
+                  <View style={[styles.skeletonLine, { width: '90%', marginTop: 8 }]} />
+                  <View style={[styles.skeletonLine, { width: '60%', marginTop: 3 }]} />
+                </View>
+              ))}
+            </>
+          )}
+          {queueVisible && !loading && error && <Text style={styles.inputLabel}>Error fetching queue data</Text>}
+          {queueVisible && !loading && !error && (
             <Suspense fallback={<Text>Loading...</Text>}>
               {filteredQueue[0] &&
                 filteredQueue.slice(0, 10).map(car => {
                   let index =
-                    deferredValue[queueMapping[vehicleType]].findIndex(trip => {
+                    queueData[queueMapping[vehicleType]].findIndex(trip => {
                       return trip.regnum === car.regnum;
                     }) + 1;
                   return (
@@ -117,8 +134,10 @@ function Home() {
                 })}
             </Suspense>
           )}
-          {queueVisible && !filteredQueue.length && <Text style={styles.inputLabel}>No vehicles in this queue</Text>}
-          {queueVisible && (filteredQueue.length > 10 || registrationNumber) && (
+          {queueVisible && !filteredQueue.length && !loading && !error && (
+            <Text style={styles.inputLabel}>No vehicles in this queue</Text>
+          )}
+          {queueVisible && (filteredQueue.length > 10 || registrationNumber) && !loading && !error && (
             <RegistrationNumberSearch
               unshownCars={filteredQueue.length - 10}
               setRegistrationNumber={setRegistrationNumber}
@@ -173,6 +192,12 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   redirectButtonText: { color: '#FFF', fontSize: 18, fontWeight: 600, backgroundColor: 'none' },
+  skeletonItem: { padding: 10, backgroundColor: '#FFF', borderRadius: 14, marginBottom: 5 },
+  skeletonLine: {
+    height: 16,
+    backgroundColor: '#e0e0e0',
+    borderRadius: 8,
+  },
 });
 
 export default Home;

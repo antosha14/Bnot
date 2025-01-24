@@ -2,19 +2,29 @@ import { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { registerBackgroundFetchAsync, unregisterBackgroundFetchAsync } from './backgroundTasks';
-import { useNotification } from '@/contexts/NotificationContext';
 
 export function useQueueNotifications() {
-  const { expoPushToken } = useNotification();
   const tripOpened = useSelector((state: RootState) => state.currentTrip?.opened);
   useEffect(() => {
-    const checkNetwork = async () => {
+    const registerTask = async () => {
       if (tripOpened) {
-        registerBackgroundFetchAsync();
+        try {
+          registerBackgroundFetchAsync();
+        } catch (error) {
+          console.error('Failed to register background fetch task:', error);
+        }
       }
     };
 
-    checkNetwork();
-    return unregisterBackgroundFetchAsync;
-  }, [tripOpened, expoPushToken]);
+    registerTask();
+    return () => {
+      (async () => {
+        try {
+          await unregisterBackgroundFetchAsync();
+        } catch (error) {
+          console.error('Failed to unregister background fetch task:', error);
+        }
+      })();
+    };
+  }, [tripOpened]);
 }

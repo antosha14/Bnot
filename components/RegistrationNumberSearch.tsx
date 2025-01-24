@@ -1,8 +1,29 @@
-import { StyleSheet, Text, View, TextInput, Pressable } from 'react-native';
+import { StyleSheet, Text, View, TextInput, ScrollView } from 'react-native';
 import React, { useState } from 'react';
 
-const RegistrationNumberSearch = ({ unshownCars, setRegistrationNumber, placeholder, scrollRef }) => {
+interface RegistrationNumberSearchProps {
+  unshownCars: number;
+  setRegistrationNumber: (text: string) => void;
+  placeholder?: string;
+  scrollRef: React.RefObject<ScrollView>;
+}
+
+const RegistrationNumberSearch: React.FC<RegistrationNumberSearchProps> = ({
+  unshownCars,
+  setRegistrationNumber,
+  placeholder,
+  scrollRef,
+}) => {
   const [text, onChangeText] = useState('');
+
+  const handleSubmit = () => {
+    scrollRef.current?.scrollTo({
+      y: 0,
+      animated: true,
+    });
+    setRegistrationNumber(text);
+  };
+
   return (
     <View>
       <Text style={styles.moreCarsMessage}>
@@ -17,13 +38,7 @@ const RegistrationNumberSearch = ({ unshownCars, setRegistrationNumber, placehol
       <TextInput
         style={styles.input}
         onChangeText={onChangeText}
-        onSubmitEditing={() => {
-          scrollRef.current?.scrollTo({
-            y: 0,
-            animated: true,
-          });
-          setRegistrationNumber(text);
-        }}
+        onSubmitEditing={handleSubmit}
         value={text}
         placeholder={placeholder || 'Enter your registration number'}
       />

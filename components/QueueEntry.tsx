@@ -8,10 +8,76 @@ import { QueueEntreeForEntryComponent } from '@/constants/types';
 import type { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 
-const QueueEntry = ({ car }: { car: QueueEntreeForEntryComponent }) => {
+interface QueueEntryProps {
+  car: QueueEntreeForEntryComponent;
+}
+
+const QueueEntry: React.FC<QueueEntryProps> = ({ car }) => {
   const currentTrip = useSelector((state: RootState) => state.currentTrip);
   const dispatch = useDispatch();
   const router = useRouter();
+
+  const handleTripOpenClick = () => {
+    if (currentTrip.opened) {
+      Alert.alert(
+        'Confirm an action',
+        'It seems like you already have a trip opened, do you wish to finish it and open a new one?',
+        [
+          {
+            text: 'Cancel',
+            onPress: () => {},
+            style: 'cancel',
+          },
+          {
+            text: 'OK',
+            onPress: () => {
+              dispatch(
+                close({
+                  ...currentTrip['currentTrip'],
+                  endTime: Date.now(),
+                  finishStatus: 'Closed while opening new trip',
+                })
+              );
+              dispatch(
+                launch({
+                  from: car.from,
+                  to: checkpointsToCountries[car.checkpoint],
+                  regnum: car.regnum,
+                  location: car.checkpoint,
+                  startTime: car.registration_date,
+                  initialQueuePosition: car.initialQueuePosition,
+                  vehicleType: queueTypeMapping[car.type_queue],
+                  appRegistrationTime: Date.now(),
+                  currentQueuePosition: car.initialQueuePosition,
+                  link: car.link,
+                  token: car.token,
+                })
+              );
+              router.push('/(tabs)/currentTrip');
+            },
+          },
+        ]
+      );
+    } else {
+      dispatch(
+        launch({
+          from: car.from,
+          to: checkpointsToCountries[car.checkpoint],
+          location: car.checkpoint,
+          regnum: car.regnum,
+          startTime: car.registration_date,
+          initialQueuePosition: car.initialQueuePosition,
+          vehicleType: queueTypeMapping[car.type_queue],
+          appRegistrationTime: Date.now(),
+          currentQueuePosition: car.initialQueuePosition,
+          link: car.link,
+          token: car.token,
+        })
+      );
+      router.push('/(tabs)/currentTrip');
+    }
+  };
+
   return (
     <View style={styles.entreeContainer}>
       <Text>
@@ -24,66 +90,7 @@ const QueueEntry = ({ car }: { car: QueueEntreeForEntryComponent }) => {
             opacity: pressed ? 0.8 : 1,
           },
         ]}
-        onPress={() => {
-          if (currentTrip.opened) {
-            Alert.alert(
-              'Confirm an action',
-              'It seems like you already have a trip opened, do you wish to finish it and open a new one?',
-              [
-                {
-                  text: 'Cancel',
-                  onPress: () => {},
-                  style: 'cancel',
-                },
-                {
-                  text: 'OK',
-                  onPress: () => {
-                    dispatch(
-                      close({
-                        ...currentTrip['currentTrip'],
-                        endTime: Date.now(),
-                        finishStatus: 'Closed while opening new trip',
-                      })
-                    );
-                    dispatch(
-                      launch({
-                        from: car.from,
-                        to: checkpointsToCountries[car.checkpoint],
-                        regnum: car.regnum,
-                        location: car.checkpoint,
-                        startTime: car.registration_date,
-                        initialQueuePosition: car.initialQueuePosition,
-                        vehicleType: queueTypeMapping[car.type_queue],
-                        appRegistrationTime: Date.now(),
-                        currentQueuePosition: car.initialQueuePosition,
-                        link: car.link,
-                        token: car.token,
-                      })
-                    );
-                    router.push('/(tabs)/currentTrip');
-                  },
-                },
-              ]
-            );
-          } else {
-            dispatch(
-              launch({
-                from: car.from,
-                to: checkpointsToCountries[car.checkpoint],
-                location: car.checkpoint,
-                regnum: car.regnum,
-                startTime: car.registration_date,
-                initialQueuePosition: car.initialQueuePosition,
-                vehicleType: queueTypeMapping[car.type_queue],
-                appRegistrationTime: Date.now(),
-                currentQueuePosition: car.initialQueuePosition,
-                link: car.link,
-                token: car.token,
-              })
-            );
-            router.push('/(tabs)/currentTrip');
-          }
-        }}
+        onPress={handleTripOpenClick}
       >
         <Text style={styles.startButtonText}>That's me! Start the trip</Text>
       </Pressable>

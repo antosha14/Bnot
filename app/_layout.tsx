@@ -1,5 +1,4 @@
 import { Stack } from 'expo-router';
-import { useFonts } from 'expo-font';
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { store } from '../store/store';

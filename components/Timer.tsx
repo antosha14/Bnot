@@ -1,8 +1,19 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { Text, StyleSheet } from 'react-native';
 
-const Timer = ({ timestamp }: { timestamp: number }) => {
-  const calculateTimeElapsed = () => {
+interface TimerProps {
+  timestamp: number;
+}
+
+interface TimeElapsed {
+  days: number;
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
+
+const Timer: React.FC<TimerProps> = ({ timestamp }) => {
+  const calculateTimeElapsed = (): TimeElapsed => {
     const now = Date.now();
     const timeElapsed = now - timestamp;
 
@@ -14,7 +25,7 @@ const Timer = ({ timestamp }: { timestamp: number }) => {
     return { days, hours, minutes, seconds };
   };
 
-  const [time, setTime] = useState(calculateTimeElapsed());
+  const [time, setTime] = useState<TimeElapsed>(calculateTimeElapsed());
 
   useEffect(() => {
     const interval = setInterval(() => {

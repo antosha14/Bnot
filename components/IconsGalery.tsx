@@ -11,11 +11,19 @@ const icons = [
   <MaterialIcons name="pedal-bike" size={32} color="#FFFFFF" />,
 ];
 
-const IconsGalery = ({ vehicleType, setVehicleType }) => {
+interface IconsGaleryProps {
+  vehicleType: number;
+  setVehicleType: (index: number) => void;
+}
+
+const ACTIVE_GRADIENT: readonly [string, string] = ['rgb(46, 35, 108)', 'rgb(46, 35, 108)'];
+const INACTIVE_GRADIENT: readonly [string, string] = ['#363E51', '#191E26'];
+
+const IconsGalery: React.FC<IconsGaleryProps> = ({ vehicleType, setVehicleType }) => {
   return (
     <View style={styles.carTypeContainer}>
       {icons.map((icon, index) => {
-        const colors = index === vehicleType ? ['rgb(46, 35, 108)', 'rgb(46, 35, 108)'] : ['#363E51', '#191E26'];
+        const colors = index === vehicleType ? ACTIVE_GRADIENT : INACTIVE_GRADIENT;
         return (
           <LinearGradient
             key={index}

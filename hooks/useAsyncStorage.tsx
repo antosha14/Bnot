@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useSelector } from 'react-redux';
+import { RootState } from '@/store/store';
 
 export function useAsyncStorage(key, initialValue) {
   const [storedValue, setStoredValue] = useState(initialValue);
-  const historyUpdated = useSelector(state => state.currentTrip.historyUpdated);
+  const historyUpdated = useSelector((state: RootState) => state.currentTrip.historyUpdated);
 
   useEffect(() => {
     const loadStoredValue = async () => {

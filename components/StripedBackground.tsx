@@ -1,13 +1,12 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import React from 'react';
 
 const StripedBackground = () => {
   return (
     <View style={styles.backgroundContainer}>
-      <View style={styles.secondaryDiv}></View>
-      <View style={styles.secondaryDiv}></View>
-      <View style={styles.secondaryDiv}></View>
-      <View style={styles.secondaryDiv}></View>
+      {[...Array(4)].map((item, index) => (
+        <View style={styles.secondaryDiv} key={index}></View>
+      ))}
     </View>
   );
 };

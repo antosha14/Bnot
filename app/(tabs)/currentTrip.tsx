@@ -9,8 +9,6 @@ import { useSelector } from 'react-redux';
 import OpenedTrip from '@/components/OpenedTrip';
 import OnlineStatus from '@/components/OnlineStatus';
 
-const PlaceholderImage = require('@/assets/images/forest.jpg');
-
 const CurrentTrip = () => {
   const router = useRouter();
   const currentTrip = useSelector((state: RootState) => state.currentTrip);
@@ -21,7 +19,7 @@ const CurrentTrip = () => {
       {!currentTrip.opened ? (
         <>
           <View>
-            <Image source={PlaceholderImage} style={styles.forestImage} />
+            <Image source={require('@/assets/images/forest.jpg')} style={styles.forestImage} />
           </View>
           <View style={styles.messageContainer}>
             <Text style={styles.messageText}>
@@ -39,7 +37,7 @@ const CurrentTrip = () => {
         </>
       ) : (
         <>
-          <OpenedTrip></OpenedTrip>
+          <OpenedTrip />
           <OnlineStatus />
         </>
       )}

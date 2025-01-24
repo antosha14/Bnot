@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable } from 'react-native';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { close } from '@/store/currentTripSlice';
 import { RootState } from '@/store/store';
@@ -8,7 +8,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import Timer from './Timer';
 import QueuePosition from './QueuePosition';
 
-const OpenedTrip = () => {
+const OpenedTrip: React.FC = () => {
   const dispatch = useDispatch();
   const trip = useSelector((state: RootState) => state.currentTrip['currentTrip']);
 
