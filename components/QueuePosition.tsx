@@ -4,7 +4,7 @@ import type { RootState } from '@/store/store';
 import { useSelector } from 'react-redux';
 
 const QueuePosition = () => {
-  const currentPosition = useSelector((state: RootState) => state.currentTrip['currentTrip'].currentQueuePosition);
+  const currentPosition = useSelector((state: RootState) => state.currentTrip['currentTrip']?.currentQueuePosition);
   return <Text style={styles.text}>{currentPosition}</Text>;
 };
 

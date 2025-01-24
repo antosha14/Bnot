@@ -16,25 +16,25 @@ const OpenedTrip: React.FC = () => {
     <View style={styles.cardContainer}>
       <View>
         <Text style={styles.pathText}>
-          {`${trip.from} `}
+          {`${trip?.from} `}
           <Entypo name="arrow-long-right" size={14} color="black" />
-          <Text>{` ${trip.to} ${parseDate(trip.appRegistrationTime)}`}</Text>
+          <Text>{` ${trip?.to} ${parseDate(trip?.appRegistrationTime || 0)}`}</Text>
         </Text>
       </View>
 
       <Text style={styles.descriptionText}>
         {`Customs Checkpoint: `}
-        <Text style={styles.normalText}>{trip.location}</Text>
+        <Text style={styles.normalText}>{trip?.location}</Text>
       </Text>
 
       <Text style={styles.descriptionText}>
         {`Car Registration Number: `}
-        <Text style={styles.normalText}>{trip.regnum}</Text>
+        <Text style={styles.normalText}>{trip?.regnum}</Text>
       </Text>
 
       <Text style={styles.descriptionText}>
         {`Vehicle type: `}
-        <Text style={styles.normalText}>{trip.vehicleType}</Text>
+        <Text style={styles.normalText}>{trip?.vehicleType}</Text>
       </Text>
 
       <Text style={styles.descriptionText}>
@@ -45,7 +45,7 @@ const OpenedTrip: React.FC = () => {
       <Text style={styles.descriptionText}>
         {`Current trip duration: `}
         <Text style={styles.normalText}>
-          <Timer timestamp={trip.appRegistrationTime} />
+          <Timer timestamp={trip?.appRegistrationTime || 0} />
         </Text>
       </Text>
 

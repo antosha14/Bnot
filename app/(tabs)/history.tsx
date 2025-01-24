@@ -20,7 +20,7 @@ const History = () => {
             </Text>
           </>
         ) : (
-          history.reverse().map(trip => {
+          history.reverse().map((trip: any) => {
             return <TripCard trip={trip} key={trip.endTime} setHistory={setHistory}></TripCard>;
           })
         )}

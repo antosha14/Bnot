@@ -1,4 +1,33 @@
-export interface ApiResponse {}
+interface CheckpointInfo {
+  id: string;
+  nameEn: string;
+  address: string;
+  phone: string;
+  isBts: number;
+  name: string;
+}
+
+export interface QueueEntryFromApi {
+  regnum: string;
+  status: number;
+  order_id: number | null;
+  type_queue: number;
+  registration_date: string;
+  changed_date: string;
+}
+
+export interface ApiResponse {
+  info: CheckpointInfo;
+  truckLiveQueue: QueueEntryFromApi[];
+  truckPriority: QueueEntryFromApi[];
+  truckGpk: QueueEntryFromApi[];
+  busLiveQueue: QueueEntryFromApi[];
+  busPriority: QueueEntryFromApi[];
+  carLiveQueue: QueueEntryFromApi[];
+  carPriority: QueueEntryFromApi[];
+  motorcycleLiveQueue: QueueEntryFromApi[];
+  motorcyclePriority: QueueEntryFromApi[];
+}
 
 export interface QueueEntreeFromApi {
   regnum: string;
@@ -59,4 +88,8 @@ export let dummyHistoryEntree = {
   endTime: Date.now() + 3100000,
   finishStatus: 'Closed by the user',
   vehicleType: 'Truck',
+  currentQueuePosition: 4,
+  regnum: 'asfqwf',
+  link: 'https://belarusborder.by/info/monitoring-new?token=test&checkpointId=a9173a85-3fc0-424c-84f0-defa632481e4',
+  token: 'sdnjansdj',
 };

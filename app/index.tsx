@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet, Pressable, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ActivityIndicator, PressableStateCallbackType } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Image } from 'expo-image';
@@ -23,7 +23,10 @@ const setTutorialFlag = async () => {
   }
 };
 
-const getButtonStyle = ({ pressed }) => [styles.directionButton, { opacity: pressed ? 0.8 : 1 }];
+const getButtonStyle = ({ pressed }: PressableStateCallbackType) => [
+  styles.directionButton,
+  { opacity: pressed ? 0.8 : 1 },
+];
 
 const HomePage = () => {
   const router = useRouter();

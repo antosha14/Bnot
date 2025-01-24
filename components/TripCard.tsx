@@ -6,7 +6,7 @@ import { parseDate, parseDuration } from '@/helpers/helpers';
 
 interface TripCardProps {
   trip: QueueEntreeClose;
-  setHistory: (callback: (prevHistory: QueueEntreeClose[]) => QueueEntreeClose[]) => void;
+  setHistory?: (callback: (prevHistory: QueueEntreeClose[]) => QueueEntreeClose[]) => void;
 }
 
 export const TripCard: React.FC<TripCardProps> = ({ trip, setHistory }) => {

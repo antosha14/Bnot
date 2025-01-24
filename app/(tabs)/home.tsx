@@ -8,16 +8,19 @@ import QueueEntry from '@/components/QueueEntry';
 import RegistrationNumberSearch from '@/components/RegistrationNumberSearch';
 import { queueMapping } from '@/constants/types';
 import { useNotification } from '@/contexts/NotificationContext';
+import { ApiResponse, QueueEntryFromApi } from '@/constants/types';
+
+type CountryKey = keyof typeof db;
 
 function Home() {
-  const [start, setStart] = useState('Belarus');
+  const [start, setStart] = useState<CountryKey>('Belarus');
   const [checkpoint, setСheckpoint] = useState(db[start].zonesFrom[0].zoneName);
   const [vehicleType, setVehicleType] = useState(0);
-  const [queueData, setQueueData] = useState({});
+  const [queueData, setQueueData] = useState<ApiResponse | null>(null);
   const [queueVisible, setQueueVisible] = useState(false);
   const [registrationNumber, setRegistrationNumber] = useState('');
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<Error | null>(null);
 
   const scrollRef = useRef();
   const { expoPushToken } = useNotification();
@@ -25,12 +28,12 @@ function Home() {
   let filteredQueue;
 
   if (queueData && queueData.info) {
-    filteredQueue = queueData[queueMapping[vehicleType]].filter(car => {
+    filteredQueue = queueData[queueMapping[vehicleType]].filter((car: QueueEntryFromApi) => {
       return car.regnum.startsWith(registrationNumber);
     });
   }
 
-  const fetchData = async url => {
+  const fetchData = async (url: string) => {
     try {
       setLoading(true);
       const response = await fetch(url);
@@ -39,7 +42,7 @@ function Home() {
       }
       const result = await response.json();
       setQueueData(result);
-    } catch (e) {
+    } catch (e: any) {
       setError(e);
       alert(e.message);
     } finally {
